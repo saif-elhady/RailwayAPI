@@ -10,6 +10,10 @@ require('dotenv').config();
 const app = (0, express_1.default)();
 //connectToDatabase
 const dbURI = process.env.db_URI || '';
+const PORT = process.env.PORT;
 mongoose_1.default.connect(dbURI)
-    .then(() => app.listen(process.env.PORT || 3000))
+    .then(() => {
+    app.listen(process.env.PORT || 3000);
+    console.log(`listening on port ${PORT}`);
+})
     .catch((err) => console.log(err));
