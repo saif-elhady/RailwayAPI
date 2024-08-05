@@ -6,7 +6,8 @@ const router = Router();
 router.get('/trips', async (req, res) => {
     const features = new APIFeatures(Trip.find(), req.query)
         .paginate()
-        .sort();
+        .sort()
+        .filter();
     const trips = await features.query;
     try {
         res.status(200).json({

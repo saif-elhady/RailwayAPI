@@ -26,6 +26,16 @@ export class APIFeatures{
 
         return this;
     }
+    filter() {
+        const queryObject = { ...this.queryString };
+        const excludedWords = ['sort', 'page', 'limit'];
+
+        excludedWords.forEach(el => delete queryObject[el]);
+
+        this.query = this.query.find(queryObject);
+
+        return this;
+    }
 }
 
 

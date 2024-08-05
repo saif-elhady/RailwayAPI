@@ -20,9 +20,16 @@ class APIFeatures {
             const sortBy = this.queryString.sort.split(',').join('');
             this.query = this.query.sort(sortBy);
         }
-        else {
-            this.query = this.query.sort('-passengersNumber');
-        }
+        // else {
+        //     this.query = this.query.sort('passengersNumber');
+        // }
+        return this;
+    }
+    filter() {
+        const queryObject = { ...this.queryString };
+        const excludedWords = ['sort', 'page', 'limit'];
+        excludedWords.forEach(el => delete queryObject[el]);
+        this.query = this.query.find(queryObject);
         return this;
     }
 }
