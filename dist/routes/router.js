@@ -6,7 +6,8 @@ const apiFeatures_1 = require("../utils/apiFeatures");
 const router = (0, express_1.Router)();
 router.get('/trips', async (req, res) => {
     const features = new apiFeatures_1.APIFeatures(schema_1.Trip.find(), req.query)
-        .paginate();
+        .paginate()
+        .sort();
     const trips = await features.query;
     try {
         res.status(200).json({
