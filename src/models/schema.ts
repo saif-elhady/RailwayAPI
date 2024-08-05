@@ -18,7 +18,7 @@ const tripSchema = new Schema({
         required: true
     },
     startingDate: {
-        type: String,
+        type: Date,
         required: true
     },
     duration: {

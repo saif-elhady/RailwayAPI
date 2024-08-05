@@ -35,7 +35,7 @@ const tripSchema = new mongoose_1.Schema({
         required: true
     },
     startingDate: {
-        type: Date,
+        type: String,
         required: true
     },
     duration: {
@@ -44,7 +44,24 @@ const tripSchema = new mongoose_1.Schema({
     },
     passengersNumber: {
         type: Number,
-        required: true
+        required: true,
+        min: [2, 'The number of passengers must be greater than 1']
     }
 });
+// //change Date format to  
+// function formatDate(date: Date): string {
+//     const day = String(date.getDate()).padStart(2, '0');
+//     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+//     const year = date.getFullYear();
+//     return `${day}/${month}/${year}`;
+// }
+// tripSchema.pre('save', function (next) {
+//     const trip = this;
+//     if (trip.isModified('startingDate')) {
+//         const date = new Date(trip.startingDate);
+//         const formattedDate = formatDate(date);
+//         trip.startingDate = formattedDate;
+//     }
+//     next();
+// });
 exports.Trip = mongoose_1.default.model('Trip', tripSchema);

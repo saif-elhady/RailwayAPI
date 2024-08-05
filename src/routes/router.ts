@@ -1,12 +1,20 @@
 import express, { Router } from "express";
 import { Trip } from '../models/schema';
-
+import { APIFeatures } from "../utils/apiFeatures";
 const router = Router();
 
-router.get('/trips',  async (req, res) => {
+router.get('/trips', async (req, res) => {
+    const features = new APIFeatures(Trip.find(), req.query)
+        .paginate();
+    const trips = await features.query;
     try {
-        const trips = await Trip.find();
-        res.send(trips);
+        res.status(200).json({
+            status: 'success',
+            results: trips.length,
+            data: {
+                trips
+            }
+        }); 
     }
     catch (err) {
         res.status(400).json({

@@ -2,11 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const schema_1 = require("../models/schema");
+const apiFeatures_1 = require("../utils/apiFeatures");
 const router = (0, express_1.Router)();
 router.get('/trips', async (req, res) => {
+    const features = new apiFeatures_1.APIFeatures(schema_1.Trip.find(), req.query)
+        .paginate();
+    const trips = await features.query;
     try {
-        const trips = await schema_1.Trip.find();
-        res.send(trips);
+        res.status(200).json({
+            status: 'success',
+            results: trips.length,
+            data: {
+                trips
+            }
+        });
     }
     catch (err) {
         res.status(400).json({
@@ -32,3 +41,4 @@ router.post('/trips/create', async (req, res) => {
         });
     }
 });
+exports.default = router;
