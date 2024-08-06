@@ -18,8 +18,15 @@ const tripSchema = new Schema({
         required: true
     },
     startingDate: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        validate: {
+            validator: function (val: string) {
+                const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+                return regex.test(val);
+            },
+            message: 'Date must be in dd/mm/yyyy format!'
+        }
     },
     duration: {
         type: String,
@@ -32,21 +39,4 @@ const tripSchema = new Schema({
     }
 }, { timestamps: true });  
 
-// //change Date format to  
-// function formatDate(date: Date): string {
-//     const day = String(date.getDate()).padStart(2, '0');
-//     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-//     const year = date.getFullYear();
-//     return `${day}/${month}/${year}`;
-// }
-
-// tripSchema.pre('save', function (next) {
-//     const trip = this;
-//     if (trip.isModified('startingDate')) {
-//         const date = new Date(trip.startingDate);
-//         const formattedDate = formatDate(date);
-//         trip.startingDate = formattedDate;
-//     }
-//     next();
-// });
 export const Trip = mongoose.model('Trip', tripSchema);
