@@ -47,7 +47,7 @@ const tripSchema = new mongoose_1.Schema({
         required: true,
         min: [2, 'The number of passengers must be greater than 1']
     }
-});
+}, { timestamps: true });
 // //change Date format to  
 // function formatDate(date: Date): string {
 //     const day = String(date.getDate()).padStart(2, '0');
