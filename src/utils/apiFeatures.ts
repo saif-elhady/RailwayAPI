@@ -28,12 +28,27 @@ export class APIFeatures{
     }
     filter() {
         const queryObject = { ...this.queryString };
-        const excludedWords = ['sort', 'page', 'limit'];
+        const excludedWords = ['sort', 'page', 'limit','date_from','date_till'];
 
         excludedWords.forEach(el => delete queryObject[el]);
 
         this.query = this.query.find(queryObject);
 
+        return this;
+    }
+    filterByDate() {
+        if (this.queryString.date_from || this.queryString.date_till) {
+            const dateFilter:any = {};
+            if (this.queryString.date_from) {
+                const [day, month, year] = this.queryString.date_from.split('/');
+                dateFilter.$gte = `${year}-${month}-${day}`;
+            }
+            if (this.queryString.date_till) {
+                const [day, month, year] = this.queryString.date_till.split('/');
+                dateFilter.$lte = `${year}-${month}-${day}`;
+            }
+            this.query = this.query.find({ startingDate: dateFilter });
+        }
         return this;
     }
 }

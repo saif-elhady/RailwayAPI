@@ -19,12 +19,18 @@ router.get('/trips', [
     (0, express_validator_1.check)('date_from').optional().custom(isValidDate).withMessage('Date from must be in dd/mm/yyyy format'),
     (0, express_validator_1.check)('date_till').optional().custom(isValidDate).withMessage('Date till must be in dd/mm/yyyy format')
 ], async (req, res) => {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ status: 'fail', errors: errors.array() });
+    }
     const features = new apiFeatures_1.APIFeatures(schema_1.Trip.find(), req.query)
         .paginate()
         .sort()
-        .filter();
+        .filter()
+        .filterByDate();
     const trips = await features.query;
     try {
+        console.log(req.body);
         res.status(200).json({
             status: 'success',
             results: trips.length,
